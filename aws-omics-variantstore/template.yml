@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for the AWS::Omics::VariantStore resource type
+
+Globals:
+  Function:
+    Timeout: 600  # docker start-up times can be long for SAM CLI
+    MemorySize: 1024
+    Environment:
+      Variables:
+        OmicsClientURI: "<YOUR_API_GW_URI>"
+
+Resources:
+  TypeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: software.amazon.omics.variantstore.HandlerWrapper::handleRequest
+      Runtime: java11
+      CodeUri: ./target/aws-omics-variantstore-1.0.jar
+
+  TestEntrypoint:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: software.amazon.omics.variantstore.HandlerWrapper::testEntrypoint
+      Runtime: java11
+      CodeUri: ./target/aws-omics-variantstore-1.0.jar
+

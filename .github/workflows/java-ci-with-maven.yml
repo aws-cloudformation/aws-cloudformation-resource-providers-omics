@@ -18,10 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8
+          java-version: 11
+          distribution: 'adopt'
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
@@ -36,11 +37,19 @@ jobs:
         uses: pre-commit/action@v2.0.0
         with:
           extra_args: --all-files
+      - name: Verify common
+        run: |
+          cd "${GITHUB_WORKSPACE}/common"
+          mvn clean verify --no-transfer-progress
+      - name: Install common
+        run: |
+          cd "${GITHUB_WORKSPACE}/common"
+          mvn clean install --no-transfer-progress
       - name: Run maven verify for all resources
         run: |
           for directory in $GITHUB_WORKSPACE/aws-*; do
             cd "$directory"
-            mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B clean verify
+            mvn clean verify
           done
       - name: Check failure log
         if: ${{ failure() }}

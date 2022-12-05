@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for the AWS::Omics::RunGroup resource type
+
+Globals:
+  Function:
+    Timeout: 180  # docker start-up times can be long for SAM CLI
+    MemorySize: 1024
+    Environment:
+      Variables:
+        OmicsClientURI: "YOUR API GW URI"
+
+Resources:
+  TypeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: software.amazon.omics.rungroup.HandlerWrapper::handleRequest
+      Runtime: java11
+      CodeUri: ./target/aws-omics-rungroup-1.0.jar
+
+  TestEntrypoint:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: software.amazon.omics.rungroup.HandlerWrapper::testEntrypoint
+      Runtime: java11
+      CodeUri: ./target/aws-omics-rungroup-1.0.jar
+
