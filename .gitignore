@@ -17,6 +17,18 @@ out/
 target/
 
 # our logs
+rpdk.log
+
+
+#misc
+pyenv*
+aws-omics-*.zip
+build
+.gradle
+gradle/
+gradlew
+gradlew.bat
+
 rpdk.log*
 
 # contains credentials
@@ -24,12 +36,3 @@ sam-tests/
 
 # sam
 .aws-sam
-
-# gradle folder
-.gradle/
-
-# build folder
-build/
-
-# bemol folder
-.bemol
